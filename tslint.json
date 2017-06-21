@@ -1,0 +1,23 @@
+{
+  "extends": [
+    "tslint:recommended"
+  ],
+  "defaultSeverity": "error",
+  "rules": {
+    "semicolon": [ true, "never" ],
+    "indent": [ true, "spaces", 2 ],
+    "quotemark": [ true, "single", "avoid-escape" ],
+    "trailing-comma": [ true, { "multiline": "never", "singleline": "never" } ],
+    "ordered-imports": [ true ],
+    "interface-name": [ true, "never-prefix" ],
+    "no-bitwise": false,
+    "arrow-parens": false,
+    "no-unused-expression": false,
+    "object-literal-sort-keys": false,
+    "object-literal-shorthand": false,
+    "member-access": false,
+    "member-ordering": [ false ],
+    "no-namespace": false,
+    "variable-name": false
+  }
+}

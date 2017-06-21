@@ -1,0 +1,16 @@
+# Don't publish the following...
+
+# Generated from Node
+node_modules/
+npm-debug.log
+
+# TypeScript related code
+mongodb-pool/
+tsconfig.json
+tslint.json
+
+# Custom VS code settings
+.vscode/
+
+# Example code
+examples/

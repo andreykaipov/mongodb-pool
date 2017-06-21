@@ -1,0 +1,23 @@
+{
+  "name": "mongodb-pool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "author": "Andrey Kaipov <akaip002@fiu.edu>",
+  "license": "ISC",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "clean": "rimraf ./*.{js,js.map,d.ts,tgz}",
+    "prepare": "tsc"
+  },
+  "dependencies": {
+    "mongodb": "*"
+  },
+  "devDependencies": {
+    "@types/mongodb": "^2.2.6",
+    "rimraf": "^2.6.1",
+    "typescript": "^2.3.4"
+  }
+}
