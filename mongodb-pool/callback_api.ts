@@ -1,11 +1,12 @@
 import { Db, MongoCallback, MongoClient, MongoClientOptions } from 'mongodb'
 
 /**
- * The native MongoDB driver does connection pooling for us, so we typically only
- * want to have one instance of the `Db` object returned from MongoClient#connect.
- * For this reason, we use TypeScript namespaces to mimic a singleton pattern.
+ * The native MongoDB driver does connection pooling for us, so we typically only want to
+ * have one instance of the `Db` object returned from MongoClient#connect in our application.
+ * For this reason, we use TypeScript modules to mimic a singleton pattern.
+ * See https://github.com/basarat/typescript-book/blob/master/docs/tips/singleton.md
  */
-namespace MongoDbPool {
+export namespace MongoDbPool {
 
   let db: Db = null
 
@@ -14,13 +15,22 @@ namespace MongoDbPool {
   export function getConnection(cb: (a: Db) => void): void
   export function getConnection(first: any, second?: any, third?: MongoCallback<Db>) {
     if (typeof first === 'string') {
+      const uri = first
+      let options = {}
+      let cb = third
       if (typeof second === 'object') {
-        getConnection_1(first, second, third)
+        options = second
       } else if (typeof second === 'function') {
-        getConnection_2(first, second)
+        cb = second
+      }
+      if (!db) {
+        connectCarelessly(uri, options, cb)
+      } else {
+        cb(null, db)
       }
     } else if (typeof first === 'function') {
-      getConnection_3(first)
+      const cb = first
+      cb(db)
     }
   }
 
@@ -28,29 +38,43 @@ namespace MongoDbPool {
     return db
   }
 
-  export function closePool() {
+  export function closePool(cb: MongoCallback<void>): void
+  export function closePool(forceClose: boolean, cb: MongoCallback<void>): void
+  export function closePool(first: any, second?: MongoCallback<void>) {
     if (db) {
-      db.close()
+      if (typeof first === 'function') {
+        db.close(first)
+      } else if (typeof first === 'boolean') {
+        db.close(first, second)
+      }
     }
   }
 
-  function getConnection_1(uri: string, options: MongoClientOptions, cb: MongoCallback<Db>) {
-    if (!db) {
-      MongoClient.connect(uri, options, (err, _db) => {
-        db = _db
-        cb(err, db)
+  export function connect(uri: string, cb: MongoCallback<Db>): void
+  export function connect(uri: string, options: MongoClientOptions, cb: MongoCallback<Db>): void
+  export function connect(uri: string, second?: any, third?: MongoCallback<Db>) {
+    let options = {}
+    let cb = third
+    if (typeof second === 'object') {
+      options = second
+    } else if (typeof second === 'function') {
+      cb = second
+    }
+    if (db) {
+      closePool((e, _) => {
+        connectCarelessly(uri, options, cb)
       })
     } else {
-      cb(null, db)
+      connectCarelessly(uri, options, cb)
     }
   }
 
-  function getConnection_2(uri: string, cb: MongoCallback<Db>) {
-    getConnection_1(uri, {}, cb)
-  }
-
-  function getConnection_3(cb: (a: Db) => void) {
-    cb(db)
+  /* this is a careless connect because we don't close the existing db connection pool */
+  function connectCarelessly(uri: string, options: MongoClientOptions, cb: MongoCallback<Db>) {
+    MongoClient.connect(uri, options, (err, _db) => {
+      db = _db
+      cb(err, db)
+    })
   }
 
 }
