@@ -1,2 +1,9 @@
+# from node
 node_modules/
 npm-debug.log
+
+# generated from tsc
+*.js
+*.js.map
+*.d.ts
+*.tgz
