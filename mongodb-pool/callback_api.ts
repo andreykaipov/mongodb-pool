@@ -1,4 +1,4 @@
-import { Db, MongoCallback, MongoClient, MongoClientOptions } from 'mongodb'
+import { Collection, Db, MongoCallback, MongoClient, MongoClientOptions } from 'mongodb'
 
 /**
  * The native MongoDB driver does connection pooling for us, so we typically only want to
@@ -32,6 +32,10 @@ export namespace MongoDbPool {
       const cb = first
       cb(db)
     }
+  }
+
+  export function getCollection<T = any>(name: string): Collection<T> {
+    return db ? db.collection(name) : null
   }
 
   export function getDb() {
