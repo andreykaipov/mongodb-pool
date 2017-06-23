@@ -1,4 +1,4 @@
-import { Db, MongoClient, MongoClientOptions } from 'mongodb'
+import { Collection, Db, MongoClient, MongoClientOptions } from 'mongodb'
 
 /**
  * The native MongoDB driver does connection pooling for us, so we typically only want to
@@ -27,6 +27,10 @@ export namespace MongoDbPool {
 
   export async function getConnection(uri?: string, options?: MongoClientOptions) {
     return db ? db : (db = await dbPromise(uri, options))
+  }
+
+  export function getCollection<T = any>(name: string): Collection<T> {
+    return db ? db.collection(name) : null
   }
 
   export function getDb() {
