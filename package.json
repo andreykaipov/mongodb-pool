@@ -9,7 +9,8 @@
     "example": "examples"
   },
   "scripts": {
-    "clean": "rimraf ./*.{js,js.map,d.ts,tgz}",
+    "clean": "rimraf ./*.{js,js.map,d.ts,tgz} ./mongodb-pool/*.{js,js.map,d.ts,tgz}",
+    "examples": "tsc --outDir ./mongodb-pool",
     "prepare": "tsc"
   },
   "dependencies": {
