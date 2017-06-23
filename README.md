@@ -45,7 +45,7 @@ TypeScript type definitions for this wrapper are included with the package if yo
 
 ## examples
 
-More small and similar examples in both JavaScript and TypeScript are available at the [GitHub repo](https://github.com/andreykaipov/mongodb-pool-examples) (if you're not already reading this `README` on GitHub). Just checkout this project, run `npm run examples` to build the package locally, start a local MongoDB instance, look through the examples, and and run `node examples/js/promises-await/app.js` (for example).
+More small and similar examples in both JavaScript and TypeScript are available at the [GitHub repo](https://github.com/andreykaipov/mongodb-pool-examples) (if you're not already reading this `README` on GitHub). Just checkout this project, run `npm run examples` to build the package locally, start a local MongoDB instance, look through the examples, and run `node examples/js/promises-await/app.js` (for example).
 
 Or see below for a detailed example.
 
@@ -104,7 +104,10 @@ Let's test it! We create a file `app.js` with the following contents.
 const MongoClient = require('mongodb')
 const { Mongo } = require('mongodb-pool')
 
-const connectionParams = [ 'mongodb://localhost:27017/admin', { poolSize: 1 } ]
+const connectionParams = [
+  'mongodb://localhost:27017/admin',
+  { poolSize: 1 }
+]
 
 async function connectViaMongoClient() {
   await MongoClient.connect(...connectionParams).then(whatsMyUri)
@@ -133,7 +136,7 @@ function whatsMyUri(db) {
 })()
 ```
 
-Here we're loading both the `mongodb` package, and this wrapper. If we start up `mongod` locally and run this script, we can see what connections have been accepted by Mongo via the `uri`. We do this by running the `whatsmyuri` command against each `db` object.
+Here we're loading both the `mongodb` package, and this wrapper. If we start up `mongod` locally and run this script, we can see what connections have been accepted by Mongo via the `uri`. We do this by running the `whatsmyuri` command against each `db` object. Take note of our connection option -- `poolSize: 1`!
 
 Running the above script without any arguments -- `node app.js`, our output is as expected!
 ```
