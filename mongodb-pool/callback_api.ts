@@ -6,7 +6,7 @@ import { Collection, Db, MongoCallback, MongoClient, MongoClientOptions } from '
  * For this reason, we use TypeScript modules to mimic a singleton pattern.
  * See https://github.com/basarat/typescript-book/blob/master/docs/tips/singleton.md
  */
-export namespace MongoDbPool {
+export namespace Mongo {
 
   let db: Db = null
 
