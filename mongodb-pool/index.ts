@@ -14,19 +14,13 @@ export namespace Mongo {
 
   let db: Db = null
 
-  /**
-   * Opens up a connection to the provided MongoDB server, replacing the current `Db` instance!
-   * Be careful with this one.
-   * @param uri The MongoDB connection string.
-   * @param options The client options as specified by the native Node driver for MongoDB.
-   */
-  export async function connect(uri?: string, options?: MongoClientOptions) {
-    await this.closePool()
-    return db = await dbPromise(uri, options)
-  }
-
   export async function getConnection(uri?: string, options?: MongoClientOptions) {
     return db ? db : (db = await dbPromise(uri, options))
+  }
+
+  /* alias to getConnection() */
+  export async function connect(uri?: string, options?: MongoClientOptions) {
+    return getConnection(uri, options)
   }
 
   export function getCollection<T = any>(name: string): Collection<T> {

@@ -24,7 +24,10 @@ export namespace Mongo {
         cb = second
       }
       if (!db) {
-        connectCarelessly(uri, options, cb)
+        MongoClient.connect(uri, options, (err, _db) => {
+          db = _db
+          cb(err, db)
+        })
       } else {
         cb(null, db)
       }
@@ -32,6 +35,11 @@ export namespace Mongo {
       const cb = first
       cb(db)
     }
+  }
+
+  /* alias to getConnection() */
+  export function connect(first: any, second?: any, third?: MongoCallback<Db>) {
+    getConnection(first, second, third)
   }
 
   export function getCollection<T = any>(name: string): Collection<T> {
@@ -52,33 +60,6 @@ export namespace Mongo {
         db.close(first, second)
       }
     }
-  }
-
-  export function connect(uri: string, cb: MongoCallback<Db>): void
-  export function connect(uri: string, options: MongoClientOptions, cb: MongoCallback<Db>): void
-  export function connect(uri: string, second?: any, third?: MongoCallback<Db>) {
-    let options = {}
-    let cb = third
-    if (typeof second === 'object') {
-      options = second
-    } else if (typeof second === 'function') {
-      cb = second
-    }
-    if (db) {
-      closePool((e, _) => {
-        connectCarelessly(uri, options, cb)
-      })
-    } else {
-      connectCarelessly(uri, options, cb)
-    }
-  }
-
-  /* this is a careless connect because we don't close the existing db connection pool */
-  function connectCarelessly(uri: string, options: MongoClientOptions, cb: MongoCallback<Db>) {
-    MongoClient.connect(uri, options, (err, _db) => {
-      db = _db
-      cb(err, db)
-    })
   }
 
 }
