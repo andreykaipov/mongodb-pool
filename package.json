@@ -1,10 +1,15 @@
 {
   "name": "mongodb-pool",
   "version": "2.0.0",
-  "description": "",
+  "description": "Small wrapper around the native node MongoDB driver to make managing the internal connection pool easier.",
+  "keywords": [ "mongodb", "mongodb pool", "connection pool", "wrapper", "mongodb typescript" ],
   "main": "./dist/index.js",
   "author": "Andrey Kaipov <akaip002@fiu.edu>",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreykaipov/mongodb-pool.git"
+  },
   "directories": {
     "example": "examples"
   },
